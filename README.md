@@ -38,7 +38,7 @@ The code for each experiment is structured as following:
 
 ## Model simulator for the Hodgkin-Huxley model
 
-We use the `Neuron` software (https://neuron.yale.edu/neuron/) to simulated the Hodgkin-Huxley model. The `Neuron` software was installed on our Local computer and simulations and calculations for the Hodgkin-Huxley was carried out on our local computer. When simulating the Hodgkin-Huxley model we utilized the same `Neuron` set up as in *Sequential neural likelihood* (http://proceedings.mlr.press/v89/papamakarios19a.html)   
+We used the `Neuron` software (https://neuron.yale.edu/neuron/) to simulate the Hodgkin-Huxley model. The `Neuron` software was installed on our local computer, and all simulations and calculations for the Hodgkin-Huxley were carried out on our local computer. When simulating the Hodgkin-Huxley model, we utilized the same `Neuron` set up as in *Sequential neural likelihood* (http://proceedings.mlr.press/v89/papamakarios19a.html)   
 
 
 ## Data
