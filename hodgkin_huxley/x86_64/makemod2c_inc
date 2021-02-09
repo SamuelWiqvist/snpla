@@ -1,0 +1,33 @@
+
+./HH_traub.c: ../HH_traub.mod
+	@printf " -> $(C_GREEN)NMODL$(C_RESET) $<\n"
+	(cd ".."; MODLUNIT=$(NRNUNITS) $(NOCMODL) HH_traub.mod -o "/home/samuel/Documents/projects/seq posterior approx w nf/seq posterior approx w nf dev/hodgkin_huxley/x86_64")
+
+./HH_traub.o: ./HH_traub.c
+	@printf " -> $(C_GREEN)Compiling$(C_RESET) $<\n"
+	$(COMPILE) -I".." $(INCLUDES) -fPIC -c $< -o $@
+
+./IL_gutnick.c: ../IL_gutnick.mod
+	@printf " -> $(C_GREEN)NMODL$(C_RESET) $<\n"
+	(cd ".."; MODLUNIT=$(NRNUNITS) $(NOCMODL) IL_gutnick.mod -o "/home/samuel/Documents/projects/seq posterior approx w nf/seq posterior approx w nf dev/hodgkin_huxley/x86_64")
+
+./IL_gutnick.o: ./IL_gutnick.c
+	@printf " -> $(C_GREEN)Compiling$(C_RESET) $<\n"
+	$(COMPILE) -I".." $(INCLUDES) -fPIC -c $< -o $@
+
+./IM_cortex.c: ../IM_cortex.mod
+	@printf " -> $(C_GREEN)NMODL$(C_RESET) $<\n"
+	(cd ".."; MODLUNIT=$(NRNUNITS) $(NOCMODL) IM_cortex.mod -o "/home/samuel/Documents/projects/seq posterior approx w nf/seq posterior approx w nf dev/hodgkin_huxley/x86_64")
+
+./IM_cortex.o: ./IM_cortex.c
+	@printf " -> $(C_GREEN)Compiling$(C_RESET) $<\n"
+	$(COMPILE) -I".." $(INCLUDES) -fPIC -c $< -o $@
+
+./IT_huguenard.c: ../IT_huguenard.mod
+	@printf " -> $(C_GREEN)NMODL$(C_RESET) $<\n"
+	(cd ".."; MODLUNIT=$(NRNUNITS) $(NOCMODL) IT_huguenard.mod -o "/home/samuel/Documents/projects/seq posterior approx w nf/seq posterior approx w nf dev/hodgkin_huxley/x86_64")
+
+./IT_huguenard.o: ./IT_huguenard.c
+	@printf " -> $(C_GREEN)Compiling$(C_RESET) $<\n"
+	$(COMPILE) -I".." $(INCLUDES) -fPIC -c $< -o $@
+

@@ -1,0 +1,14 @@
+Input args:
+Dim: 2
+seed: 2
+seed_data: 10
+/home/samwiq/spa/seq-posterior-approx-w-nf-dev/mv_gaussian/low_dim_w_five_obs/lunarc
+/home/samwiq/spa/seq-posterior-approx-w-nf-dev
+ABC-SMC 2.5k
+ABC-SMC 5k
+ABC-SMC 7.5k
+ABC-SMC 10k
+
+Runtime:0.68
+ABC-SMC 100k
+ABC-SMC 1000k

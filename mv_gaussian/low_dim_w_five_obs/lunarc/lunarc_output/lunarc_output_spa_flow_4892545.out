@@ -1,0 +1,241 @@
+Input args:
+Dim: 2
+seed: 7
+seed_data: 10
+/home/samwiq/spa/seq-posterior-approx-w-nf-dev/mv_gaussian/low_dim_w_five_obs/lunarc
+/home/samwiq/spa/seq-posterior-approx-w-nf-dev
+[1.0, 0.4065696597405991, 0.16529888822158653, 0.06720551273974976]
+start full training
+Iteration: 1
+optimizer_post_lr: [0.001]
+start update likelihood model
+Epoch: 0, loss (training): 27.8716, loss (eval): 39.6065
+Epoch: 1, loss (training): 21.2918, loss (eval): 23.176
+Epoch: 2, loss (training): 18.7781, loss (eval): 19.4335
+Epoch: 3, loss (training): 17.3902, loss (eval): 17.9915
+Epoch: 4, loss (training): 16.3199, loss (eval): 16.854
+Epoch: 5, loss (training): 15.4046, loss (eval): 15.8148
+Epoch: 6, loss (training): 14.5614, loss (eval): 15.1991
+Epoch: 7, loss (training): 13.671, loss (eval): 14.2991
+Epoch: 8, loss (training): 12.9975, loss (eval): 13.5425
+Epoch: 9, loss (training): 12.3291, loss (eval): 12.813
+Epoch: 10, loss (training): 11.9383, loss (eval): 12.3007
+Epoch: 11, loss (training): 11.5255, loss (eval): 11.8595
+Epoch: 12, loss (training): 11.1068, loss (eval): 11.3924
+Epoch: 13, loss (training): 10.9857, loss (eval): 11.3796
+Epoch: 14, loss (training): 10.7546, loss (eval): 11.2504
+Epoch: 15, loss (training): 10.6287, loss (eval): 11.0107
+Epoch: 16, loss (training): 10.6063, loss (eval): 10.8431
+Epoch: 17, loss (training): 10.5257, loss (eval): 10.7544
+Epoch: 18, loss (training): 10.3864, loss (eval): 10.9199
+Epoch: 19, loss (training): 10.3606, loss (eval): 10.6173
+Epoch: 20, loss (training): 10.3078, loss (eval): 10.6537
+Epoch: 21, loss (training): 10.2252, loss (eval): 10.6863
+Epoch: 22, loss (training): 10.233, loss (eval): 10.8143
+Epoch: 23, loss (training): 10.1937, loss (eval): 10.415
+Epoch: 24, loss (training): 10.1871, loss (eval): 10.4162
+start update posterior model from prior pred - hot start
+Epoch: 0, loss (training): 3.8598, loss (eval): 7.1626
+Epoch: 1, loss (training): 2.2295, loss (eval): 2.9931
+Epoch: 2, loss (training): 1.5212, loss (eval): 2.0365
+Epoch: 3, loss (training): 1.1737, loss (eval): 1.4772
+Epoch: 4, loss (training): 1.0916, loss (eval): 1.3377
+Epoch: 5, loss (training): 1.1542, loss (eval): 1.6533
+Epoch: 6, loss (training): 1.0655, loss (eval): 1.6747
+Epoch: 7, loss (training): 0.7517, loss (eval): 0.9569
+Epoch: 8, loss (training): 0.6233, loss (eval): 0.8037
+Epoch: 9, loss (training): 0.6598, loss (eval): 1.1168
+start update posterior model
+Epoch: 0, loss (training): 14.8191, loss (eval): 15.1262
+Epoch: 1, loss (training): 14.7888, loss (eval): 14.8152
+Epoch: 2, loss (training): 14.8071, loss (eval): 14.7977
+Epoch: 3, loss (training): 14.7932, loss (eval): 14.8244
+Epoch: 4, loss (training): 14.784, loss (eval): 14.7742
+Epoch: 5, loss (training): 14.7856, loss (eval): 14.8528
+Epoch: 6, loss (training): 14.7863, loss (eval): 14.793
+Epoch: 7, loss (training): 14.7975, loss (eval): 14.8337
+Epoch: 8, loss (training): 14.7933, loss (eval): 14.7892
+Epoch: 9, loss (training): 14.8009, loss (eval): 14.9923
+Epoch: 10, loss (training): 14.7931, loss (eval): 14.7646
+Epoch: 11, loss (training): 14.7728, loss (eval): 14.7831
+Epoch: 12, loss (training): 14.7829, loss (eval): 14.7698
+Epoch: 13, loss (training): 14.782, loss (eval): 14.7829
+Epoch: 14, loss (training): 14.7769, loss (eval): 14.7742
+Epoch: 15, loss (training): 14.7888, loss (eval): 14.7757
+Epoch: 16, loss (training): 14.786, loss (eval): 14.7731
+Epoch: 17, loss (training): 14.779, loss (eval): 14.7768
+Epoch: 18, loss (training): 14.7776, loss (eval): 14.7875
+Epoch: 19, loss (training): 14.7827, loss (eval): 14.768
+Epoch: 20, loss (training): 14.783, loss (eval): 14.7606
+Epoch: 21, loss (training): 14.7764, loss (eval): 14.7772
+Epoch: 22, loss (training): 14.7838, loss (eval): 14.7766
+Epoch: 23, loss (training): 14.7824, loss (eval): 14.7679
+Epoch: 24, loss (training): 14.775, loss (eval): 14.78
+Iteration: 2
+optimizer_post_lr: [0.001]
+start update likelihood model
+Epoch: 0, loss (training): 10.4095, loss (eval): 10.3549
+Epoch: 1, loss (training): 10.3784, loss (eval): 10.5064
+Epoch: 2, loss (training): 10.2447, loss (eval): 10.3441
+Epoch: 3, loss (training): 10.179, loss (eval): 10.2718
+Epoch: 4, loss (training): 10.227, loss (eval): 10.223
+Epoch: 5, loss (training): 10.1742, loss (eval): 10.2807
+Epoch: 6, loss (training): 10.2258, loss (eval): 10.339
+Epoch: 7, loss (training): 10.228, loss (eval): 10.3444
+Epoch: 8, loss (training): 10.1854, loss (eval): 10.2864
+Epoch: 9, loss (training): 10.2061, loss (eval): 10.2378
+Epoch: 10, loss (training): 10.1909, loss (eval): 10.2772
+Epoch: 11, loss (training): 10.1594, loss (eval): 10.2936
+Epoch: 12, loss (training): 10.1564, loss (eval): 10.2721
+Epoch: 13, loss (training): 10.1667, loss (eval): 10.2101
+Epoch: 14, loss (training): 10.1194, loss (eval): 10.2399
+Epoch: 15, loss (training): 10.1047, loss (eval): 10.205
+Epoch: 16, loss (training): 10.1658, loss (eval): 10.3281
+Epoch: 17, loss (training): 10.1107, loss (eval): 10.2079
+Epoch: 18, loss (training): 10.1535, loss (eval): 10.2371
+Epoch: 19, loss (training): 10.0791, loss (eval): 10.3119
+Epoch: 20, loss (training): 10.1315, loss (eval): 10.2933
+Epoch: 21, loss (training): 10.1047, loss (eval): 10.3041
+Epoch: 22, loss (training): 10.0689, loss (eval): 10.2841
+Epoch: 23, loss (training): 10.0743, loss (eval): 10.3552
+Epoch: 24, loss (training): 10.107, loss (eval): 10.4036
+start update posterior model
+Epoch: 0, loss (training): 14.4529, loss (eval): 14.5086
+Epoch: 1, loss (training): 14.4503, loss (eval): 14.4475
+Epoch: 2, loss (training): 14.445, loss (eval): 14.4315
+Epoch: 3, loss (training): 14.4469, loss (eval): 14.431
+Epoch: 4, loss (training): 14.4448, loss (eval): 14.4411
+Epoch: 5, loss (training): 14.4478, loss (eval): 14.4531
+Epoch: 6, loss (training): 14.4434, loss (eval): 14.4323
+Epoch: 7, loss (training): 14.4478, loss (eval): 14.4396
+Epoch: 8, loss (training): 14.4527, loss (eval): 14.4414
+Epoch: 9, loss (training): 14.4458, loss (eval): 14.4301
+Epoch: 10, loss (training): 14.4477, loss (eval): 14.4389
+Epoch: 11, loss (training): 14.4427, loss (eval): 14.4543
+Epoch: 12, loss (training): 14.4473, loss (eval): 14.4616
+Epoch: 13, loss (training): 14.4466, loss (eval): 14.4428
+Epoch: 14, loss (training): 14.4515, loss (eval): 14.4369
+Epoch: 15, loss (training): 14.4431, loss (eval): 14.4309
+Epoch: 16, loss (training): 14.4407, loss (eval): 14.4529
+Epoch: 17, loss (training): 14.4455, loss (eval): 14.4844
+Epoch: 18, loss (training): 14.4454, loss (eval): 14.4363
+Epoch: 19, loss (training): 14.4469, loss (eval): 14.4506
+Epoch: 20, loss (training): 14.4471, loss (eval): 14.4309
+Epoch: 21, loss (training): 14.4481, loss (eval): 14.444
+Epoch: 22, loss (training): 14.4423, loss (eval): 14.4483
+Epoch: 23, loss (training): 14.4445, loss (eval): 14.4516
+Epoch: 24, loss (training): 14.4472, loss (eval): 14.4291
+Iteration: 3
+optimizer_post_lr: [0.001]
+start update likelihood model
+Epoch: 0, loss (training): 10.2986, loss (eval): 10.2674
+Epoch: 1, loss (training): 10.2592, loss (eval): 10.2571
+Epoch: 2, loss (training): 10.238, loss (eval): 10.2542
+Epoch: 3, loss (training): 10.2193, loss (eval): 10.2465
+Epoch: 4, loss (training): 10.1747, loss (eval): 10.2981
+Epoch: 5, loss (training): 10.1782, loss (eval): 10.275
+Epoch: 6, loss (training): 10.1748, loss (eval): 10.3205
+Epoch: 7, loss (training): 10.1696, loss (eval): 10.2582
+Epoch: 8, loss (training): 10.132, loss (eval): 10.3023
+Epoch: 9, loss (training): 10.137, loss (eval): 10.2201
+Epoch: 10, loss (training): 10.1181, loss (eval): 10.2881
+Epoch: 11, loss (training): 10.153, loss (eval): 10.2174
+Epoch: 12, loss (training): 10.1741, loss (eval): 10.3698
+Epoch: 13, loss (training): 10.1566, loss (eval): 10.2702
+Epoch: 14, loss (training): 10.126, loss (eval): 10.2975
+Epoch: 15, loss (training): 10.1102, loss (eval): 10.2764
+Epoch: 16, loss (training): 10.1158, loss (eval): 10.2333
+Epoch: 17, loss (training): 10.1066, loss (eval): 10.254
+Epoch: 18, loss (training): 10.135, loss (eval): 10.3489
+Epoch: 19, loss (training): 10.1, loss (eval): 10.282
+Epoch: 20, loss (training): 10.2027, loss (eval): 10.5808
+Epoch: 21, loss (training): 10.1254, loss (eval): 10.3503
+Epoch: 22, loss (training): 10.0915, loss (eval): 10.2353
+Epoch: 23, loss (training): 10.0883, loss (eval): 10.2237
+Epoch: 24, loss (training): 10.0817, loss (eval): 10.2169
+start update posterior model
+Epoch: 0, loss (training): 14.1097, loss (eval): 14.2188
+Epoch: 1, loss (training): 14.1032, loss (eval): 14.1209
+Epoch: 2, loss (training): 14.108, loss (eval): 14.1031
+Epoch: 3, loss (training): 14.1037, loss (eval): 14.1025
+Epoch: 4, loss (training): 14.1056, loss (eval): 14.0996
+Epoch: 5, loss (training): 14.1061, loss (eval): 14.144
+Epoch: 6, loss (training): 14.1049, loss (eval): 14.1187
+Epoch: 7, loss (training): 14.1045, loss (eval): 14.0944
+Epoch: 8, loss (training): 14.1044, loss (eval): 14.1088
+Epoch: 9, loss (training): 14.1058, loss (eval): 14.0951
+Epoch: 10, loss (training): 14.1067, loss (eval): 14.1079
+Epoch: 11, loss (training): 14.1063, loss (eval): 14.0987
+Epoch: 12, loss (training): 14.1058, loss (eval): 14.0988
+Epoch: 13, loss (training): 14.1043, loss (eval): 14.1044
+Epoch: 14, loss (training): 14.1034, loss (eval): 14.1028
+Epoch: 15, loss (training): 14.1011, loss (eval): 14.1143
+Epoch: 16, loss (training): 14.1023, loss (eval): 14.0968
+Epoch: 17, loss (training): 14.1056, loss (eval): 14.1093
+Epoch: 18, loss (training): 14.1048, loss (eval): 14.0895
+Epoch: 19, loss (training): 14.105, loss (eval): 14.0976
+Epoch: 20, loss (training): 14.111, loss (eval): 14.0938
+Epoch: 21, loss (training): 14.1026, loss (eval): 14.1272
+Epoch: 22, loss (training): 14.1028, loss (eval): 14.1026
+Epoch: 23, loss (training): 14.1039, loss (eval): 14.1086
+Epoch: 24, loss (training): 14.1018, loss (eval): 14.0958
+Iteration: 4
+optimizer_post_lr: [0.001]
+start update likelihood model
+Epoch: 0, loss (training): 10.2338, loss (eval): 10.2367
+Epoch: 1, loss (training): 10.1633, loss (eval): 10.1692
+Epoch: 2, loss (training): 10.149, loss (eval): 10.2297
+Epoch: 3, loss (training): 10.1268, loss (eval): 10.2433
+Epoch: 4, loss (training): 10.1484, loss (eval): 10.2162
+Epoch: 5, loss (training): 10.0987, loss (eval): 10.2098
+Epoch: 6, loss (training): 10.0782, loss (eval): 10.1887
+Epoch: 7, loss (training): 10.0763, loss (eval): 10.1824
+Epoch: 8, loss (training): 10.0847, loss (eval): 10.2596
+Epoch: 9, loss (training): 10.0616, loss (eval): 10.1968
+Epoch: 10, loss (training): 10.0498, loss (eval): 10.1536
+Epoch: 11, loss (training): 10.0707, loss (eval): 10.2868
+Epoch: 12, loss (training): 10.0864, loss (eval): 10.1789
+Epoch: 13, loss (training): 10.0295, loss (eval): 10.1642
+Epoch: 14, loss (training): 10.1008, loss (eval): 10.2897
+Epoch: 15, loss (training): 10.0989, loss (eval): 10.2136
+Epoch: 16, loss (training): 10.0655, loss (eval): 10.2623
+Epoch: 17, loss (training): 10.0827, loss (eval): 10.183
+Epoch: 18, loss (training): 10.0408, loss (eval): 10.2279
+Epoch: 19, loss (training): 10.0784, loss (eval): 10.1539
+Epoch: 20, loss (training): 10.0717, loss (eval): 10.3942
+Epoch: 21, loss (training): 10.0755, loss (eval): 10.3168
+Epoch: 22, loss (training): 10.0573, loss (eval): 10.268
+Epoch: 23, loss (training): 10.0402, loss (eval): 10.2485
+Epoch: 24, loss (training): 10.0456, loss (eval): 10.3254
+start update posterior model
+Epoch: 0, loss (training): 14.3602, loss (eval): 14.3581
+Epoch: 1, loss (training): 14.3591, loss (eval): 14.3737
+Epoch: 2, loss (training): 14.3625, loss (eval): 14.359
+Epoch: 3, loss (training): 14.3615, loss (eval): 14.3688
+Epoch: 4, loss (training): 14.3598, loss (eval): 14.3509
+Epoch: 5, loss (training): 14.3565, loss (eval): 14.3573
+Epoch: 6, loss (training): 14.3568, loss (eval): 14.3672
+Epoch: 7, loss (training): 14.3595, loss (eval): 14.3496
+Epoch: 8, loss (training): 14.3603, loss (eval): 14.3716
+Epoch: 9, loss (training): 14.3592, loss (eval): 14.366
+Epoch: 10, loss (training): 14.3607, loss (eval): 14.3383
+Epoch: 11, loss (training): 14.3575, loss (eval): 14.3624
+Epoch: 12, loss (training): 14.3597, loss (eval): 14.3483
+Epoch: 13, loss (training): 14.3642, loss (eval): 14.3543
+Epoch: 14, loss (training): 14.3577, loss (eval): 14.3675
+Epoch: 15, loss (training): 14.3587, loss (eval): 14.362
+Epoch: 16, loss (training): 14.3551, loss (eval): 14.3515
+Epoch: 17, loss (training): 14.3565, loss (eval): 14.3545
+Epoch: 18, loss (training): 14.3583, loss (eval): 14.3471
+Epoch: 19, loss (training): 14.3553, loss (eval): 14.3511
+Epoch: 20, loss (training): 14.3573, loss (eval): 14.3489
+Epoch: 21, loss (training): 14.3584, loss (eval): 14.3613
+Epoch: 22, loss (training): 14.3597, loss (eval): 14.3477
+Epoch: 23, loss (training): 14.3573, loss (eval): 14.3758
+Epoch: 24, loss (training): 14.3566, loss (eval): 14.3499
+
+Runtime:340.2
+0
+1
+2
+3

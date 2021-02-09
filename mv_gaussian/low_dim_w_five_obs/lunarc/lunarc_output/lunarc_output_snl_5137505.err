@@ -1,0 +1,35 @@
+/sw/easybuild/software/PyTorch/1.6.0-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages/torch/tensor.py:358: UserWarning: non-inplace resize is deprecated
+  warnings.warn("non-inplace resize is deprecated")
+Traceback (most recent call last):
+  File "/home/samwiq/.local/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/io/gfile.py", line 200, in makedirs
+    os.makedirs(path)
+  File "/sw/easybuild/software/Python/3.7.4-GCCcore-8.3.0/lib/python3.7/os.py", line 221, in makedirs
+    mkdir(name, mode)
+FileExistsError: [Errno 17] File exists: '/home/samwiq/spa/seq-posterior-approx-w-nf-dev/sbi-logs/pytorch_simulator/SNLE_A/2021-01-30T19_57_10.600220'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/samwiq/spa/seq-posterior-approx-w-nf-dev/mv_gaussian/low_dim_w_five_obs/run_script_snl.py", line 72, in <module>
+    inference = SNLE_A(simulator, prior, density_estimator=build_custom_like_net)
+  File "/home/samwiq/.local/lib/python3.7/site-packages/sbi/inference/snle/snle_a.py", line 80, in __init__
+    super().__init__(**kwargs)
+  File "/home/samwiq/.local/lib/python3.7/site-packages/sbi/inference/snle/snle_base.py", line 75, in __init__
+    show_round_summary=show_round_summary,
+  File "/home/samwiq/.local/lib/python3.7/site-packages/sbi/inference/base.py", line 156, in __init__
+    self._default_summary_writer() if summary_writer is None else summary_writer
+  File "/home/samwiq/.local/lib/python3.7/site-packages/sbi/inference/base.py", line 313, in _default_summary_writer
+    return SummaryWriter(logdir)
+  File "/sw/easybuild/software/PyTorch/1.6.0-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages/torch/utils/tensorboard/writer.py", line 225, in __init__
+    self._get_file_writer()
+  File "/sw/easybuild/software/PyTorch/1.6.0-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages/torch/utils/tensorboard/writer.py", line 256, in _get_file_writer
+    self.flush_secs, self.filename_suffix)
+  File "/sw/easybuild/software/PyTorch/1.6.0-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages/torch/utils/tensorboard/writer.py", line 66, in __init__
+    log_dir, max_queue, flush_secs, filename_suffix)
+  File "/home/samwiq/.local/lib/python3.7/site-packages/tensorboard/summary/writer/event_file_writer.py", line 77, in __init__
+    tf.io.gfile.makedirs(logdir)
+  File "/home/samwiq/.local/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/io/gfile.py", line 673, in makedirs
+    return get_filesystem(path).makedirs(path)
+  File "/home/samwiq/.local/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/io/gfile.py", line 203, in makedirs
+    None, None, "Directory already exists"
+tensorboard.compat.tensorflow_stub.errors.AlreadyExistsError: Directory already exists

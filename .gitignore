@@ -1,0 +1,24 @@
+*pth
+*png
+*csv
+*tar.gz
+*xml
+*pdf
+*eps
+
+/sbi-logs
+/**/sbi-logs
+/**/lunarc/sbi-logs
+/**/**/lunarc/sbi-logs
+
+.ipynb_checkpoints
+__pycache__
+sbi-logs
+.idea
+
+/**/results/*.txt
+/**/**/results/*.txt
+
+/hodgkin_huxley/cell_types
+
+# add more gitignor stuff for each new case study (if we do not have the pattern as above)

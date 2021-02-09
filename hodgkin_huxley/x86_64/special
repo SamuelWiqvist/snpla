@@ -1,0 +1,17 @@
+#!/bin/sh
+if test "x${NRNHOME}" = "x" ; then
+    NRNHOME="/home/samuel/anaconda3/envs/py374/lib/python3.7/site-packages/neuron/.data"
+fi
+if test "${NEURONHOME}" = "" ; then
+    NEURONHOME=${NRNHOME}/share/nrn
+    export NEURONHOME
+fi
+if test "x${NRNBIN}" = "x" ; then
+    NRNBIN="/home/samuel/anaconda3/envs/py374/bin"
+fi
+if test "" = "yes" ; then
+    NRNIV="${NRNBIN}/nrniv.app/Contents/MacOS/nrniv"
+else
+    NRNIV="${NRNBIN}/nrniv"
+fi
+"${NRNIV}" -dll "/home/samuel/Documents/projects/seq posterior approx w nf/seq posterior approx w nf dev/hodgkin_huxley/x86_64/.libs/libnrnmech.so" "$@"
