@@ -1,14 +1,14 @@
-## Sequential Neural Posterior and Likelihood Approximation
+## Code for: Sequential Neural Posterior and Likelihood Approximation
 
-This repo contains the code for the paper Sequential Neural Posterior and Likelihood Approximation arxiv-link. 
+This repo contains the code for the paper *Sequential Neural Posterior and Likelihood Approximation* arxiv-link. 
 
 The results presented in the **first** Arxiv version of this paper where generated with the code at tag `preprint1`  
 
 ## Computer environment
 
-The models where implemented using `PyTorch` utilizing the packages `nflows` and `sbi`.
+The models were implemented using `PyTorch` utilizing the packages `nflows` and `sbi`.
 
-The models where trained and run on the `LUNARC` computer system http://www.lunarc.lu.se/, and the results where analysed on a local computer.  
+The models were trained and run on the `LUNARC` computer system http://www.lunarc.lu.se/, and the results were analysed on a local computer.  
 
 ### System settings
 
@@ -21,7 +21,7 @@ The models where trained and run on the `LUNARC` computer system http://www.luna
 
 ## Code structure 
 
-- `/algorithms` - source code for the SPA method
+- `/algorithms` - source code for the SNPLA method
 - `/util` - source code for some utility functions
 - `/mv_gaussian` - source code, run scripts, and notebooks for the MV Gaussian examples
 - `/two_moons` - source code, run scripts, and notebooks for the two-moons examples
@@ -34,6 +34,8 @@ The code for each experiment is structured as following:
 - The `run_script_"algorithm".py` files are the run scripts
 - The notebook `analysis.py` is used to produce all analysis and  plots
 - The `*.sh` files in the `/lunarc` folder are the scripts used to run the algorithms on the  `LUNARC` system
+
+**NB**: In some places in the code is it the case that `spa` and `spa_flow` are used to refer to `snpla`  
 
 
 ## Model simulator for the Hodgkin-Huxley model
