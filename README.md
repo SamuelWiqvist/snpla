@@ -1,6 +1,6 @@
 ## Code for: Sequential Neural Posterior and Likelihood Approximation
 
-This repo contains the code for the paper *Sequential Neural Posterior and Likelihood Approximation* arxiv-link. 
+This repo contains the code for the paper *Sequential Neural Posterior and Likelihood Approximation* https://arxiv.org/abs/2102.06522. 
 
 The results presented in the **first** Arxiv version of this paper where generated with the code at tag `preprint1`  
 
