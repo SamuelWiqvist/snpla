@@ -13,6 +13,7 @@
 # name for script
 #SBATCH -J snpe_c
 
+
 # controll job outputs
 #SBATCH -o lunarc_output/lunarc_output_snpe_c_%j.out
 #SBATCH -e lunarc_output/lunarc_output_snpe_c_%j.err
@@ -29,4 +30,4 @@ ml load OpenMPI/3.1.4
 ml load PyTorch/1.6.0-Python-3.7.4
 
 # run program
-python /home/samwiq/spa/'seq-posterior-approx-w-nf-dev'/'lotka_volterra'/run_script_snpe_c.py 1 8
+python /home/samwiq/snpla/'seq-posterior-approx-w-nf-dev'/'lotka_volterra'/run_script_snpe_c.py 1 11 8

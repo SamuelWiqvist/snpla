@@ -9,6 +9,20 @@ from nflows.utils import torchutils
 from torch.nn import functional as F
 import torch
 
+class InvTanh(Transform):
+    def inverse(self, inputs, context=None):
+        outputs = torch.tanh(inputs)
+        logabsdet = torch.log(1 - outputs ** 2)
+        logabsdet = torchutils.sum_except_batch(logabsdet, num_batch_dims=1)
+        return outputs, logabsdet
+
+    def forward(self, inputs, context=None):
+        if torch.min(inputs) <= -1 or torch.max(inputs) >= 1:
+            raise InputOutsideDomain()
+        outputs = 0.5 * torch.log((1 + inputs) / (1 - inputs))
+        logabsdet = -torch.log(1 - inputs ** 2)
+        logabsdet = torchutils.sum_except_batch(logabsdet, num_batch_dims=1)
+        return outputs, logabsdet
 
 class InvSigmoid(Transform):
     def __init__(self, temperature=1, eps=1e-6, learn_temperature=False):

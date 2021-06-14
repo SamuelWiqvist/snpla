@@ -1,6 +1,6 @@
 /sw/easybuild/software/PyTorch/1.6.0-fosscuda-2019b-Python-3.7.4/lib/python3.7/site-packages/torch/tensor.py:358: UserWarning: non-inplace resize is deprecated
   warnings.warn("non-inplace resize is deprecated")
-./algorithms/spa.py:90: UserWarning: This overload of nonzero is deprecated:
+./algorithms/snpla.py:90: UserWarning: This overload of nonzero is deprecated:
 	nonzero()
 Consider using one of the following signatures instead:
 	nonzero(*, bool as_tuple) (Triggered internally at  ../torch/csrc/utils/python_arg_parser.cpp:766.)

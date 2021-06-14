@@ -2,8 +2,8 @@ Input args:
 Dim: 2
 seed: 1
 seed_data: 10
-/home/samwiq/spa/seq-posterior-approx-w-nf-dev/mv_gaussian/low_dim_w_five_obs/lunarc
-/home/samwiq/spa/seq-posterior-approx-w-nf-dev
+/home/samwiq/snpla/seq-posterior-approx-w-nf-dev/mv_gaussian/low_dim_w_five_obs/lunarc
+/home/samwiq/snpla/seq-posterior-approx-w-nf-dev
 [1.0, 0.4065696597405991, 0.16529888822158653, 0.06720551273974976]
 start full training
 Iteration: 1

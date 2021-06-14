@@ -18,6 +18,7 @@
 # name for script
 #SBATCH -J snl
 
+ 
 # controll job outputs
 #SBATCH -o lunarc_output/outputs_snl_%j.out
 #SBATCH -e lunarc_output/errors_snl_%j.err
@@ -35,4 +36,4 @@ ml load PyTorch/1.6.0-Python-3.7.4
 
 
 # run program
-python /home/samwiq/spa/'seq-posterior-approx-w-nf-dev'/'two_moons'/run_script_snl.py 1 2 $1 10
+python /home/samwiq/snpla/'seq-posterior-approx-w-nf-dev'/'two_moons'/run_script_snl.py 1 2 $1 10

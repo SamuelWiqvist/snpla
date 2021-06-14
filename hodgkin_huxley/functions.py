@@ -4,8 +4,12 @@ import inspect
 import os
 import sys
 
+from torch import nn
 import torch
 from nflows.distributions.normal import StandardNormal
+from nflows.distributions.normal import ConditionalDiagonalNormal
+from nflows.distributions.uniform import BoxUniform
+
 from nflows.flows.base import Flow
 from nflows.transforms.autoregressive import MaskedAffineAutoregressiveTransform
 from nflows.transforms.base import (
@@ -13,8 +17,8 @@ from nflows.transforms.base import (
 )
 from nflows.transforms.permutations import ReversePermutation
 from nflows.transforms.standard import PointwiseAffineTransform
-from sbi.utils import BoxUniform
-from torch.distributions.multivariate_normal import MultivariateNormal
+from nflows.transforms.nonlinearities import Tanh
+from nflows.transforms.normalization import BatchNorm
 import numpy as np
 
 # load from util (from https://stackoverflow.com/questions/714063/importing-modules-from-parent-folder)
@@ -22,6 +26,28 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
 from util import InvSigmoid
+from util import UniformContext
+
+# Return min ess of the samples in x, code adapted from https://github.com/gpapamak/snl/blob/master/util/math.py
+def ess_mcmc(x):
+
+    N, dim = x.shape
+
+    x = x - x.mean(0)
+
+    acors = torch.zeros(x.shape)
+
+    for i in range(dim):
+        for lag in range(N):
+            acor = torch.dot(x[:N-lag, i], x[lag:, i]) / (N - lag)
+            if acor < 0:
+                break
+            acors[lag, i] = acor
+
+    act = 1 + 2 + acors[1:].sum(0) / acors[0]
+    ess = N/act
+
+    return min(ess).item()
 
 def load_summary_stats_mean_and_std():
     m_s_of_prior = np.loadtxt('data/m_s_of_prior.csv', delimiter=",")
@@ -30,6 +56,8 @@ def load_summary_stats_mean_and_std():
     return torch.from_numpy(m_s_of_prior).to(dtype=torch.float32), \
            torch.from_numpy(s_s_of_prior).to(dtype=torch.float32)
 
+
+# For whiten, calc_whitening_transform, and de_whiten: code adapted from: https://github.com/gpapamak/snl/blob/master/util/math.py
 def whiten(xs, params):
     """
     Whitens a given dataset using the whitening transform provided.
@@ -61,6 +89,19 @@ def calc_whitening_transform(xs):
 
     return means, U, istds
 
+def de_whiten(xs, params):
+    """
+    De-whitens a given dataset using the whitening transform provided.
+    """
+
+    means, U, istds = params
+
+    ys = xs.copy()
+    ys /= istds
+    ys = np.dot(ys, U.T)
+    ys += means
+
+    return ys
 
 def pilot_run(model, simulator, summary_stats_obs, plotting=True, nbr_prior_samples=5000):
 
@@ -89,42 +130,6 @@ def pilot_run(model, simulator, summary_stats_obs, plotting=True, nbr_prior_samp
 
     return means, U, istds
 
-    """
-    prior_m = data_from_prior.mean(dim=0)
-    prior_std = data_from_prior.std(dim=0)
-
-    np.savetxt('data/m_s_of_prior.csv', prior_m.numpy(), delimiter=",")
-    np.savetxt('data/s_s_of_prior.csv', prior_std.numpy(), delimiter=",")
-
-    if plotting:
-
-        # local import
-        import matplotlib.pyplot as plt
-
-        for i in range(n_summary):
-            plt.figure()  # ok since we run the plotting in a notebook
-            plt.hist(data_from_prior[:, i].numpy())
-            plt.plot(summary_stats_obs[i].item(), 10, "*")
-
-        # calc and plot standardized
-        summary_stats_obs = torch.as_tensor(summary_stats_obs)
-
-        data_from_prior = (data_from_prior - prior_m) / prior_std
-
-        print(data_from_prior.shape)
-
-        summary_stats_obs = (summary_stats_obs - prior_m) / prior_std
-
-        print(summary_stats_obs)
-
-        for i in range(n_summary):
-            plt.figure()  # ok since we run the plotting in a notebook
-            plt.hist(data_from_prior[:, i].numpy())
-            plt.plot(summary_stats_obs[i].item(), 10, "*")
-
-
-    print("Pilot run ended")
-    """
 
 # sets up the networks for the flow and likelihood and posterior model
 def set_up_networks(lower_post_limits, upper_post_limits, dim_post=12, dim_summary_stat=19, seed=10):
@@ -146,23 +151,38 @@ def set_up_networks(lower_post_limits, upper_post_limits, dim_post=12, dim_summa
     flow_lik = Flow(transform, base_dist_lik)
 
     base_dist_post = StandardNormal(shape=[dim_post])
+    #base_dist_post = ConditionalDiagonalNormal(shape=[dim_post], context_encoder=nn.Linear(dim_summary_stat, 2*dim_post))
+
+    #base_dist_post = UniformContext.UniformContext(low=lower_post_limits, high=upper_post_limits, shape=[dim_post])
 
     num_layers = 4
 
     transforms = []
 
-    # def post model in prior space
+    # def post model in prior snplace
     shift_vec = torch.zeros(dim_post)
     scale_vec = torch.zeros(dim_post)
+    num_off_set = 0.001  # numerical offset since the prior is on the open space
+
+    print("set priors")
+
+    print(upper_post_limits)
+    print(lower_post_limits)
 
     for i in range(dim_post):
+
         shift_tmp, scale_tmp = calc_scale_and_shift(lower_post_limits[i], upper_post_limits[i])
         shift_vec[i] = shift_tmp
         scale_vec[i] = scale_tmp
 
+    #print(shift_vec)
+    #print(scale_vec)
+
     print(shift_vec)
     print(scale_vec)
 
+
+    # last transformation
     transforms.append(PointwiseAffineTransform(shift=shift_vec, scale=scale_vec))
     transforms.append(InvSigmoid.InvSigmoid())  # this should be inv sigmoide!
 

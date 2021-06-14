@@ -2,8 +2,8 @@ Input args:
 Dim: 2
 seed: 38
 seed_data: 10
-/home/samwiq/spa/seq-posterior-approx-w-nf-dev/mv_gaussian/low_dim_w_five_obs/lunarc
-/home/samwiq/spa/seq-posterior-approx-w-nf-dev
+/home/samwiq/snpla/seq-posterior-approx-w-nf-dev/mv_gaussian/low_dim_w_five_obs/lunarc
+/home/samwiq/snpla/seq-posterior-approx-w-nf-dev
 Nbr trainable parameters: 17776
 start training
 Epoch: 0, loss: 0.7815537660708651, eval loss: 7.021642208099365

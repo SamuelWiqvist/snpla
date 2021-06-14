@@ -9,6 +9,8 @@ from sbi.inference import SNRE_B, prepare_for_sbi
 # Initial set up
 lunarc = int(sys.argv[1])
 seed = int(sys.argv[2])
+hp_tuning = int(sys.argv[3])  # if hp_tuning = 0, no hyper-param tuning, else hp_tuning for that sample of the hp
+
 seed_data = 7
 
 print("Input args:")
@@ -16,7 +18,7 @@ print("seed: " + str(seed))
 print("seed_data: " + str(seed_data))
 
 if lunarc == 1:
-    os.chdir('/home/samwiq/spa/seq-posterior-approx-w-nf-dev/lotka_volterra')
+    os.chdir('/home/samwiq/snpla/seq-posterior-approx-w-nf-dev/lotka_volterra')
 else:
     os.chdir('/home/samuel/Documents/projects/seq posterior approx w nf/seq posterior approx w nf dev/lotka_volterra')
 
@@ -26,8 +28,17 @@ print(os.getcwd())
 
 id_job = str(seed) + '_' + str(seed_data)
 
+if hp_tuning > 0:
+    id_job = id_job + "_" + str(hp_tuning)
+
 import LotkaVolterra
 import functions as func  # Set model and generate data
+
+print(hp_tuning)
+print(func.sample_hp("snre_b", hp_tuning))
+print(torch.rand(1))
+print(func.sample_hp("snre_b", hp_tuning)[0].item())
+print(torch.rand(1))
 
 # Set model and generate data
 
@@ -58,6 +69,11 @@ def build_custom_post_net(batch_theta, batch_x):
 
 inference = SNRE_B(simulator, prior)
 
+learning_rate = 0.0005  # default value
+
+if hp_tuning >= 2:
+    learning_rate = func.sample_hp("snre_b", hp_tuning)[0].item()
+
 start = time.time()
 
 torch.manual_seed(seed)
@@ -72,8 +88,10 @@ x_o = s_x_o
 posteriors = []
 proposal = None
 
+print(learning_rate)
+
 for i in range(num_rounds):
-    posterior = inference(num_simulations=1000, proposal=proposal, max_num_epochs=50)
+    posterior = inference(num_simulations=1000, proposal=proposal, max_num_epochs=50, learning_rate=learning_rate)
     posteriors.append(posterior)
     proposal = posterior.set_default_x(x_o)
 
@@ -93,16 +111,38 @@ for i in range(num_rounds):
     post_gauss_approx = func.fit_gaussian_dist(posterior_sample)  # to get correct prob
     log_probs.append(-post_gauss_approx.log_prob(theta_true))
 
-    np.savetxt('data/post_samples_snre_b_' + str(i + 1) + "_" + id_job + '.csv',
-               posterior_sample.detach().numpy(), delimiter=",")
+    if hp_tuning == 0:
+
+        np.savetxt('data/post_samples_snre_b_' + str(i + 1) + "_" + id_job + '.csv',
+                   posterior_sample.detach().numpy(), delimiter=",")
+
+    else:
+
+        np.savetxt('hp_tuning/post_samples_snre_b_' + str(i + 1) + "_" + id_job + '.csv',
+                   posterior_sample.detach().numpy(), delimiter=",")
 
 end = time.time()
 run_time_inference = (end - start) / num_rounds
 
 # Write results
 
-with open('results/snre_b_' + id_job + '.txt', 'w') as f:
-    f.write('%.4f\n' % run_time)
-    f.write('%.4f\n' % run_time_inference)
-    for i in range(num_rounds):
-        f.write('%.4f\n' % log_probs[i])
+if hp_tuning == 0:
+
+    with open('results/snre_b_' + id_job + '.txt', 'w') as f:
+        f.write('%.4f\n' % run_time)
+        f.write('%.4f\n' % run_time_inference)
+        for i in range(num_rounds):
+            f.write('%.4f\n' % log_probs[i])
+
+else:
+
+    with open('hp_tuning/snre_b_' + id_job + '.txt', 'w') as f:
+        f.write('%.4f\n' % hp_tuning)
+        f.write('%.6f\n' % learning_rate)
+        f.write('%.4f\n' % run_time)
+        f.write('%.4f\n' % run_time_inference)
+        for i in range(num_rounds):
+            f.write('%.4f\n' % log_probs[i])
+
+start = time.time()
+

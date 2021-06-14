@@ -5,12 +5,12 @@ Traceback (most recent call last):
     os.makedirs(path)
   File "/sw/easybuild/software/Python/3.7.4-GCCcore-8.3.0/lib/python3.7/os.py", line 221, in makedirs
     mkdir(name, mode)
-FileExistsError: [Errno 17] File exists: '/home/samwiq/spa/seq-posterior-approx-w-nf-dev/sbi-logs/pytorch_simulator/SNLE_A/2021-01-30T19_57_10.600220'
+FileExistsError: [Errno 17] File exists: '/home/samwiq/snpla/seq-posterior-approx-w-nf-dev/sbi-logs/pytorch_simulator/SNLE_A/2021-01-30T19_57_10.600220'
 
 During handling of the above exception, another exception occurred:
 
 Traceback (most recent call last):
-  File "/home/samwiq/spa/seq-posterior-approx-w-nf-dev/mv_gaussian/low_dim_w_five_obs/run_script_snl.py", line 72, in <module>
+  File "/home/samwiq/snpla/seq-posterior-approx-w-nf-dev/mv_gaussian/low_dim_w_five_obs/run_script_snl.py", line 72, in <module>
     inference = SNLE_A(simulator, prior, density_estimator=build_custom_like_net)
   File "/home/samwiq/.local/lib/python3.7/site-packages/sbi/inference/snle/snle_a.py", line 80, in __init__
     super().__init__(**kwargs)

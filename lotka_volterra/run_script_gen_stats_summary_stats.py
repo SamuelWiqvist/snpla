@@ -14,7 +14,7 @@ print(os.getcwd())
 
 # set the wd to the base folder for the project
 if lunarc == 1:
-    os.chdir('/home/samwiq/spa/seq-posterior-approx-w-nf-dev/lotka_volterra')
+    os.chdir('/home/samwiq/snpla/seq-posterior-approx-w-nf-dev/lotka_volterra')
 else:
     os.chdir('/home/samuel/Documents/projects/seq posterior approx w nf/seq posterior approx w nf dev/lotka_volterra')
 

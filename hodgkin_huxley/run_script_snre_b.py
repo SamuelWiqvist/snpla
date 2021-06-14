@@ -16,7 +16,7 @@ print("seed: " + str(seed))
 print("seed_data: " + str(seed_data))
 
 if lunarc == 1:
-    os.chdir('/home/samwiq/spa/seq-posterior-approx-w-nf-dev/lotka_volterra')
+    os.chdir('/home/samwiq/snpla/seq-posterior-approx-w-nf-dev/lotka_volterra')
 else:
     os.chdir('/home/samuel/Documents/projects/seq posterior approx w nf/seq posterior approx w nf dev/lotka_volterra')
 

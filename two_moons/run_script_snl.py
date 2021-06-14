@@ -12,19 +12,19 @@ lunarc = int(sys.argv[1])
 dim = int(sys.argv[2])
 seed = int(sys.argv[3])
 seed_data = int(sys.argv[4])
+hp_tuning = int(sys.argv[5])  # if hp_tuning = 0, no hyper-param tuning, else hp_tuning for that sample of the hp
 
 print("Input args:")
 print("Dim: " + str(dim))
 print("seed: " + str(seed))
 print("seed_data: " + str(seed_data))
 
-
 # Set wd
 print(os.getcwd())
 
 # set the wd to the base folder for the project
 if lunarc == 1:
-    os.chdir('/home/samwiq/spa/seq-posterior-approx-w-nf-dev/two_moons')
+    os.chdir('/home/samwiq/snpla/seq-posterior-approx-w-nf-dev/two_moons')
 else:
     os.chdir('/home/samuel/Documents/projects/seq posterior approx w nf/seq posterior approx w nf dev/two_moons')
 
@@ -34,9 +34,19 @@ print(os.getcwd())
 
 id_job = str(dim) + '_' + str(seed) + '_' + str(seed_data)
 
+if hp_tuning > 0:
+    id_job = id_job + "_" + str(hp_tuning)
+
 import functions as func
 
+print(hp_tuning)
+print(func.sample_hp("snl", hp_tuning))
+print(torch.rand(1))
+print(func.sample_hp("snl", hp_tuning)[0].item())
+print(torch.rand(1))
+
 prior = BoxUniform(low=-2*torch.ones(2), high=2*torch.ones(2))
+
 x_o, model = func.set_up_model(prior)
 
 
@@ -58,6 +68,11 @@ def build_custom_like_net(batch_theta, batch_x):
 
 inference = SNLE_A(simulator, prior, density_estimator=build_custom_like_net)
 
+learning_rate = 0.0005  # default value
+
+if hp_tuning >= 2:
+    learning_rate = func.sample_hp("snl", hp_tuning)[0].item()
+
 start = time.time()
 
 torch.manual_seed(seed)
@@ -65,7 +80,7 @@ np.random.seed(seed)
 torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = False
 
-num_rounds = 5
+num_rounds = 10
 x_o = x_o.flatten()
 
 posteriors = []
@@ -73,7 +88,7 @@ proposal = None
 
 for i in range(num_rounds):
     print("Round: " + str(i))
-    posterior = inference(num_simulations=2000, proposal=proposal, max_num_epochs=50)
+    posterior = inference(num_simulations=1000, proposal=proposal, max_num_epochs=50, learning_rate=learning_rate)
     posteriors.append(posterior)
     proposal = posterior.set_default_x(x_o)
 
@@ -96,25 +111,45 @@ for i in range(num_rounds):
     theta_trained = posteriors[i].sample((1000,), x=x_o)
     theta_trained = theta_trained.reshape((1000, 2))
 
-    np.savetxt('data/snl_posterior_' + str(i+1) + "_" + id_job + '.csv',
-               theta_trained.detach().numpy(), delimiter=",")
+    if hp_tuning == 0:
+
+        np.savetxt('data/snl_posterior_' + str(i + 1) + "_" + id_job + '.csv',
+                   theta_trained.detach().numpy(), delimiter=",")
+
+    else:
+
+        np.savetxt('hp_tuning/snl_posterior_' + str(i + 1) + "_" + id_job + '.csv',
+                   theta_trained.detach().numpy(), delimiter=",")
+
 
 end = time.time()
 run_time_inference = (end - start)/num_rounds
 
-torch.manual_seed(seed)
-
-theta_test = model.gen_posterior_samples(x_o, 1000)
-
-x_trained = inference._posterior.net.sample(1, context=theta_test)
-x_trained = x_trained.reshape((1000, 2))
-
-np.savetxt('data/snl_post_pred_' + id_job + '.csv', x_trained.detach().numpy(), delimiter=",")
 
 
 # save runtimes
 
-with open('results/snl_' + id_job + '.txt', 'w') as f:
+if hp_tuning == 0:
 
-    f.write('%.4f\n' % run_time)
-    f.write('%.4f\n' % run_time_inference)
+    with open('results/snl_' + id_job + '.txt', 'w') as f:
+        f.write('%.4f\n' % run_time)
+        f.write('%.4f\n' % run_time_inference)
+
+else:
+
+    with open('hp_tuning/snl_' + id_job + '.txt', 'w') as f:
+        f.write('%.4f\n' % run_time)
+        f.write('%.4f\n' % run_time_inference)
+        f.write('%.6f\n' % learning_rate)
+
+
+if hp_tuning == 0:
+
+    torch.manual_seed(seed)
+
+    theta_test = model.gen_posterior_samples(x_o, 1000)
+
+    x_trained = inference._posterior.net.sample(1, context=theta_test)
+    x_trained = x_trained.reshape((1000, 2))
+
+    np.savetxt('data/snl_post_pred_' + id_job + '.csv', x_trained.detach().numpy(), delimiter=",")

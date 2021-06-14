@@ -16,7 +16,6 @@ def flatten(x):
 
 # simulate data from the model
 def run_model_sim(N_samples, seed, conj_model, analytical_posterior, Sigma_real, dim=2, from_prior=True):
-
     if from_prior:
         torch.manual_seed(seed)
         theta = conj_model.prior.rsample(sample_shape=(N_samples,))
@@ -38,7 +37,6 @@ def run_model_sim(N_samples, seed, conj_model, analytical_posterior, Sigma_real,
 
 # sets up the models
 def set_up_model(seed, seed_data=10, dim=2):
-
     mu_prior = torch.zeros([dim])
     Sigma_prior = 5 * torch.eye(dim)
     prior = MultivariateNormal(mu_prior, Sigma_prior)
@@ -55,7 +53,7 @@ def set_up_model(seed, seed_data=10, dim=2):
     model = MultivariateNormal(loc=mu_real, scale_tril=Sigma_real_tril)
 
     # set conj model
-    conj_model = cMVN.ConjugateMultivariateNormal(model, prior, 5, 2*5)
+    conj_model = cMVN.ConjugateMultivariateNormal(model, prior, 5, 2 * 5)
 
     # generate data
     x_o = conj_model.sample_fixed_seed(seed)
@@ -69,7 +67,6 @@ def set_up_model(seed, seed_data=10, dim=2):
 
 # sets up the networks for the flow and likelihood and posterior model
 def set_up_networks(seed=10, dim=2):
-
     torch.manual_seed(seed)
 
     base_dist = StandardNormal(shape=[10])
@@ -105,3 +102,18 @@ def set_up_networks(seed=10, dim=2):
     flow_post = Flow(transform, base_dist_post)
 
     return flow_lik, flow_post
+
+
+def sample_hp(method, case):
+
+    torch.manual_seed(case)
+
+    if method == "snpe_c" or method == "snl" or method == "snre_b":
+        return 10 ** -4 + (10 ** -2 - 10 ** -4) * torch.rand(1)
+    else:
+        lr_like = 10 ** -4 + (10 ** -2 - 10 ** -4) * torch.rand(1)
+        lr_post = 10 ** -4 + (10 ** -2 - 10 ** -4) * torch.rand(1)
+        gamma_post = 0.8 + (0.999 - 0.8) * torch.rand(1)
+        lam = 0.65 + (0.95 - 0.65) * torch.rand(1)
+        return [lr_like[0].item(), lr_post[0].item(), gamma_post[0].item(), lam[0].item()]
+

@@ -1,6 +1,6 @@
 Copyright 2020 Samuel Wiqvist,  Jes Frellsen, Umberto Picchini
 
-This project is licensed under the The MIT License. Except for the file /two_moons/TwoMoons.py which is licensed under the 3-Clause BSD License, for details see /two_moons/LICENSE.txt
+This project is licensed under the The MIT License. Except for the file /two_moons/TwoMoons.py which is licensed under the 3-Clause BSD License, for details see /two_moons/LICENSE.txt. Some of the code in the file hodgkin_huxley/functions.py are licensed under the MIT license at hodgkin_huxley/LICENSE
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

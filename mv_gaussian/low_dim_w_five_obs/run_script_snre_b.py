@@ -17,6 +17,7 @@ print("Input args:")
 print("Dim: " + str(dim))
 print("seed: " + str(seed))
 print("seed_data: " + str(seed_data))
+hp_tuning = int(sys.argv[5])  # if hp_tuning = 0, no hyper-param tuning, else hp_tuning for that sample of the hp
 
 # Set wd
 print(os.getcwd())
@@ -26,7 +27,7 @@ id_job = str(dim) + '_' + str(seed) + '_' + str(seed_data)
 
 # set the wd to the base folder for the project
 if lunarc == 1:
-    os.chdir('/home/samwiq/spa/seq-posterior-approx-w-nf-dev')
+    os.chdir('/home/samwiq/snpla/seq-posterior-approx-w-nf-dev')
 else:
     os.chdir('/home/samuel/Documents/projects/seq posterior approx w nf/seq posterior approx w nf dev')
 
@@ -34,8 +35,17 @@ sys.path.append('./')
 
 print(os.getcwd())
 
+if hp_tuning > 0:
+    id_job = id_job + "_" + str(hp_tuning)
+
 # Load all utility functions for all methods
 import mv_gaussian.low_dim_w_five_obs.functions as func
+
+print(hp_tuning)
+print(func.sample_hp("snre_b", hp_tuning))
+print(torch.rand(1))
+print(func.sample_hp("snre_b", hp_tuning)[0].item())
+print(torch.rand(1))
 
 # Set model and generate data
 
@@ -68,6 +78,12 @@ def build_custom_post_net(batch_theta, batch_x):
 
 inference = SNRE_B(simulator, prior)
 
+
+learning_rate = 0.0005  # default value
+
+if hp_tuning >= 2:
+    learning_rate = func.sample_hp("snre_b", hp_tuning)[0].item()
+
 start = time.time()
 
 torch.manual_seed(seed)
@@ -81,8 +97,10 @@ x_o = x_o.flatten()
 posteriors = []
 proposal = None
 
+print(learning_rate)
+
 for i in range(num_rounds):
-    posterior = inference(num_simulations=2500, proposal=proposal, max_num_epochs=100)
+    posterior = inference(num_simulations=2500, proposal=proposal, max_num_epochs=100, learning_rate=learning_rate)
     posteriors.append(posterior)
     proposal = posterior.set_default_x(x_o)
 
@@ -104,16 +122,36 @@ for i in range(num_rounds):
     posterior_sample = posteriors[i].sample((1000,), x=x_o)
     kl_divs_trained.append(conj_model.kl_div(analytical_posterior, posterior_sample))
 
-    np.savetxt('mv_gaussian/low_dim_w_five_obs/data/post_samples_snre_b_' + str(i+1) + "_" + id_job + '.csv',
-               posterior_sample.detach().numpy(), delimiter=",")
+    if hp_tuning == 0:
+
+        np.savetxt('mv_gaussian/low_dim_w_five_obs/data/post_samples_snre_b_' + str(i + 1) + "_" + id_job + '.csv',
+                   posterior_sample.detach().numpy(), delimiter=",")
+
+    else:
+
+        np.savetxt('mv_gaussian/low_dim_w_five_obs/hp_tuning/post_samples_snre_b_' + str(i + 1) + "_" + id_job + '.csv',
+                   posterior_sample.detach().numpy(), delimiter=",")
+
 
 end = time.time()
 run_time_inference = (end - start)/num_rounds
 
 # Write results
 
-with open('mv_gaussian/low_dim_w_five_obs/results/snre_b_' + id_job + '.txt', 'w') as f:
-    f.write('%.4f\n' % run_time)
-    f.write('%.4f\n' % run_time_inference)
-    for i in range(num_rounds):
-        f.write('%.4f\n' % kl_divs_trained[i])
+if hp_tuning == 0:
+
+    with open('mv_gaussian/low_dim_w_five_obs/results/snre_b_' + id_job + '.txt', 'w') as f:
+        f.write('%.4f\n' % run_time)
+        f.write('%.4f\n' % run_time_inference)
+        for i in range(num_rounds):
+            f.write('%.4f\n' % kl_divs_trained[i])
+
+else:
+
+    with open('mv_gaussian/low_dim_w_five_obs/hp_tuning/snre_b_' + id_job + '.txt', 'w') as f:
+        f.write('%.4f\n' % hp_tuning)
+        f.write('%.6f\n' % learning_rate)
+        f.write('%.4f\n' % run_time)
+        f.write('%.4f\n' % run_time_inference)
+        for i in range(num_rounds):
+            f.write('%.4f\n' % kl_divs_trained[i])

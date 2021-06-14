@@ -5,6 +5,10 @@
 *xml
 *pdf
 *eps
+*err
+*out
+*zip
+
 
 /sbi-logs
 /**/sbi-logs
@@ -18,6 +22,14 @@ sbi-logs
 
 /**/results/*.txt
 /**/**/results/*.txt
+
+/**/hp_tuning/*.txt
+/**/**/hp_tuning/*.txt
+
+
+/**/lambda_val/*.txt
+/**/**/lambda_val/*.txt
+
 
 /hodgkin_huxley/cell_types
 

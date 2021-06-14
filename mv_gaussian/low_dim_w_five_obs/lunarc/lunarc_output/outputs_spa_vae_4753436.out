@@ -1,5 +1,5 @@
-/home/samwiq/spa/seq-posterior-approx-w-nf-dev/mv_gaussian/2d w 5 obs/lunarc
-/home/samwiq/spa/seq-posterior-approx-w-nf-dev/mv_gaussian
+/home/samwiq/snpla/seq-posterior-approx-w-nf-dev/mv_gaussian/2d w 5 obs/lunarc
+/home/samwiq/snpla/seq-posterior-approx-w-nf-dev/mv_gaussian
 tensor(2.1580, grad_fn=<MeanBackward0>)
 tensor(1.4855, grad_fn=<MeanBackward0>)
 tensor([ 0.0137, -0.0313,  0.0624, -0.3587,  0.2313, -0.0715, -0.1071,  0.1075,

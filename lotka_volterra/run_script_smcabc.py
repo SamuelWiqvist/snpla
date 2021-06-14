@@ -20,7 +20,7 @@ print(os.getcwd())
 
 # set the wd to the base folder for the project
 if lunarc == 1:
-    os.chdir('/home/samwiq/spa/seq-posterior-approx-w-nf-dev/lotka_volterra')
+    os.chdir('/home/samwiq/snpla/seq-posterior-approx-w-nf-dev/lotka_volterra')
 else:
     os.chdir('/home/samuel/Documents/projects/seq posterior approx w nf/seq posterior approx w nf dev/lotka_volterra')
 
@@ -29,8 +29,6 @@ sys.path.append('./')
 print(os.getcwd())
 
 id_job = str(seed) + '_' + str(seed_data)
-
-
 
 # Load all utility functions for all methods
 import LotkaVolterra
@@ -56,7 +54,7 @@ s_x_o = func.normalize_summary_stats(s_x_o, m_s_of_prior, s_s_of_prior)
 
 simulator, prior = prepare_for_sbi(simulator, model.prior)
 
-inference = SMCABC(simulator, prior, show_progress_bars=False)
+inference = SMCABC(simulator, prior, show_progress_bars=True)
 
 torch.manual_seed(seed)
 np.random.seed(seed)
@@ -67,7 +65,7 @@ x_o = s_x_o
 
 # run inference w diff nbr of total sim
 
-nbr_sim = [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000]
+nbr_sim = [1000, 2000, 3000, 4000, 5000, 10000, 100000] #, 50000, 100000]
 
 posteriors = []
 run_time_save = 0
@@ -77,8 +75,12 @@ for n_tot in nbr_sim:
 
     start = time.time()
 
-    posteriors.append(inference(x_o, num_particles=100, num_initial_pop=100, num_simulations=n_tot, epsilon_decay=0.8))
-
+    posteriors.append(inference(x_o,
+                                num_particles=1000,
+                                num_initial_pop=1000,
+                                num_simulations=n_tot,
+                                epsilon_decay=0.05,
+                                distance_based_decay=True))
     end = time.time()
     run_time = end - start
 

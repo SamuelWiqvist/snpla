@@ -1,6 +1,23 @@
 import os
+import sys
 
-os.chdir('/home/samuel/Documents/projects/seq posterior approx w nf/seq posterior approx w nf dev/hodgkin_huxley')
+seed_data = 7
+
+lunarc = int(sys.argv[1])
+nbr_params = int(sys.argv[2])
+data_set = str(sys.argv[3])
+seed = int(sys.argv[4])
+
+print("test")
+
+# remove disp setting
+if lunarc == 1 and 'DISPLAY' in os.environ:
+    del os.environ['DISPLAY']
+
+if lunarc == 1:
+    os.chdir('/home/samwiq/snpla/seq-posterior-approx-w-nf-dev/hodgkin_huxley')
+else:
+    os.chdir('/home/samuel/Documents/projects/seq posterior approx w nf/seq posterior approx w nf dev/hodgkin_huxley')
 
 import torch
 import HodgkinHuxley
@@ -8,22 +25,8 @@ import numpy as np
 import functions as func
 import time
 
-import sys
-
-print("Python version")
-print(sys.version)
-
-print("Version info.")
-print(sys.version_info)
-
-print(os.getcwd())
-
-seed_data = 7
-
-nbr_params = int(sys.argv[1])
-data_set = str(sys.argv[2])
 nbr_samples = int(len(HodgkinHuxley.h.t_vec) * HodgkinHuxley.h.dt)
-job = str(data_set) + "_" + str(nbr_params) + "_" + str(nbr_samples)
+job = str(data_set) + "_" + str(nbr_params) + "_" + str(nbr_samples) + "_" + str(seed)
 
 # Gen  data
 
@@ -52,6 +55,8 @@ w_sim_wrapper = lambda param: torch.as_tensor(func.whiten(simulator_wrapper(para
 
 from sbi.inference import SNPE_C, prepare_for_sbi
 
+print(model.prior)
+
 simulator, prior = prepare_for_sbi(w_sim_wrapper, model.prior)
 
 
@@ -71,18 +76,28 @@ inference = SNPE_C(simulator, prior, density_estimator=build_custom_post_net)
 
 start = time.time()
 
-torch.manual_seed(1)
-np.random.seed(1)
+torch.manual_seed(seed)
+np.random.seed(seed)
 torch.backends.cudnn.deterministic = True
 torch.backends.cudnn.benchmark = False
 
 num_rounds = 12
+
 x_o = torch.from_numpy(summary_stats_obs_w).to(dtype=torch.float32).reshape(1, 19)
+
+print("----------------")
+flow_post = build_custom_post_net(3, 4)
+print(model.prior.base_dist.low)
+print(flow_post.sample(1000, context=x_o).min(dim=1))
+print("---")
+print(model.prior.base_dist.high)
+print(flow_post.sample(1000, context=x_o).max(dim=1))
 
 posteriors = []
 proposal = None
 
 for i in range(num_rounds):
+    print(i)
     # lr = 0.001*math.exp(-0.95 * i)
     posterior = inference(num_simulations=2000, proposal=proposal, max_num_epochs=100)  # , learning_rate=lr)
     posteriors.append(posterior)
@@ -106,6 +121,8 @@ run_time_inference = (end - start) / num_rounds
 
 # Write results
 
-with open('results/snpec_' + '_' + job + '.txt', 'w') as f:
+with open('results/snpec_' + job + '.txt', 'w') as f:
     f.write('%.4f\n' % run_time)
     f.write('%.4f\n' % run_time_inference)
+
+print(seed)

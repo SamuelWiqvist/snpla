@@ -2,8 +2,8 @@ Input args:
 Dim: 2
 seed: 45
 seed_data: 10
-/home/samwiq/spa/seq-posterior-approx-w-nf-dev/mv_gaussian/low_dim_w_five_obs/lunarc
-/home/samwiq/spa/seq-posterior-approx-w-nf-dev
+/home/samwiq/snpla/seq-posterior-approx-w-nf-dev/mv_gaussian/low_dim_w_five_obs/lunarc
+/home/samwiq/snpla/seq-posterior-approx-w-nf-dev
 tensor(7.0253e+12, grad_fn=<MeanBackward0>)
 tensor(1.1008e+08, grad_fn=<MeanBackward0>)
 tensor([ 1.0774e+09, -8.1950e+06,  1.4223e+07,  2.0102e+02, -1.4668e+00,

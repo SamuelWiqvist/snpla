@@ -10,6 +10,7 @@ import math
 # Initial set up
 lunarc = int(sys.argv[1])
 seed = int(sys.argv[2])
+hp_tuning = int(sys.argv[3])  # if hp_tuning = 0, no hyper-param tuning, else hp_tuning for that sample of the hp
 seed_data = 7
 
 print("Input args:")
@@ -21,7 +22,7 @@ print(os.getcwd())
 
 # set the wd to the base folder for the project
 if lunarc == 1:
-    os.chdir('/home/samwiq/spa/seq-posterior-approx-w-nf-dev/lotka_volterra')
+    os.chdir('/home/samwiq/snpla/seq-posterior-approx-w-nf-dev/lotka_volterra')
 else:
     os.chdir('/home/samuel/Documents/projects/seq posterior approx w nf/seq posterior approx w nf dev/lotka_volterra')
 
@@ -31,10 +32,19 @@ print(os.getcwd())
 
 id_job = str(seed) + '_' + str(seed_data)
 
+if hp_tuning > 0:
+    id_job = id_job + "_" + str(hp_tuning)
+
 
 # Load all utility functions for all methods
 import LotkaVolterra
 import functions as func  # Set model and generate data
+
+print(hp_tuning)
+print(func.sample_hp("snl", hp_tuning))
+print(torch.rand(1))
+print(func.sample_hp("snl", hp_tuning))
+print(torch.rand(1))
 
 # Set model and generate data
 
@@ -65,6 +75,12 @@ def build_custom_like_net(batch_theta, batch_x):
 
 inference = SNLE_A(simulator, prior, density_estimator=build_custom_like_net)
 
+hyper_params = [0.0005, 0.98]  # default value
+
+if hp_tuning >= 2:
+    hyper_params = func.sample_hp("snl", hp_tuning)
+
+
 start = time.time()
 
 torch.manual_seed(seed)
@@ -78,9 +94,10 @@ x_o = s_x_o
 posteriors = []
 proposal = None
 
+print(hyper_params)
 
 for i in range(num_rounds):
-    learning_rate = 0.0005*math.exp(-0.98 * i)
+    learning_rate = hyper_params[0]*math.exp(-hyper_params[1] * i)
     posterior = inference(num_simulations=1000, proposal=proposal, max_num_epochs=50, learning_rate=learning_rate)
     posteriors.append(posterior)
     proposal = posterior.set_default_x(x_o)
@@ -118,48 +135,81 @@ for i in range(num_rounds):
     np.savetxt('data/snl_posterior_' + str(i + 1) + "_" + id_job + '.csv',
                posterior_sample.detach().numpy(), delimiter=",")
 
+    if hp_tuning == 0:
+
+        np.savetxt('data/snl_posterior_' + str(i + 1) + "_" + id_job + '.csv',
+                   posterior_sample.detach().numpy(), delimiter=",")
+
+    else:
+
+        np.savetxt('hp_tuning/snl_posterior_' + str(i + 1) + "_" + id_job + '.csv',
+                   posterior_sample.detach().numpy(), delimiter=",")
+
+
 end = time.time()
 run_time_inference = (end - start) / num_rounds
 
 # Write results
 
-with open('results/snl_' + id_job + '.txt', 'w') as f:
-    f.write('%.4f\n' % run_time)
-    f.write('%.4f\n' % run_time_inference)
-    for i in range(num_rounds):
-        f.write('%.4f\n' % log_probs[i])
+#with open('results/snl_' + id_job + '.txt', 'w') as f:
+#    f.write('%.4f\n' % run_time)
+#    f.write('%.4f\n' % run_time_inference)
+#    for i in range(num_rounds):
+#        f.write('%.4f\n' % log_probs[i])
+
+if hp_tuning == 0:
+
+    with open('results/snl_' + id_job + '.txt', 'w') as f:
+        f.write('%.4f\n' % run_time)
+        f.write('%.4f\n' % run_time_inference)
+        for i in range(num_rounds):
+            f.write('%.4f\n' % log_probs[i])
+
+else:
+
+    with open('hp_tuning/snl_' + id_job + '.txt', 'w') as f:
+        f.write('%.4f\n' % hp_tuning)
+        f.write('%.6f\n' % hyper_params[0])
+        f.write('%.6f\n' % hyper_params[1])
+        f.write('%.4f\n' % run_time)
+        f.write('%.4f\n' % run_time_inference)
+        for i in range(num_rounds):
+            f.write('%.4f\n' % log_probs[i])
+
+# gen samples from likelihood model
+if hp_tuning == 0:
 
 
-# prior pred samples
-torch.manual_seed(seed + 1)
-N_prior_pred_test = 1000
-theta_test = model.prior.rsample(sample_shape=(N_prior_pred_test,))
+    # prior pred samples
+    torch.manual_seed(seed + 1)
+    N_prior_pred_test = 1000
+    theta_test = model.prior.rsample(sample_shape=(N_prior_pred_test,))
 
-# obs data samples
-torch.manual_seed(seed + 2)
-N_test_obs_data = 1000
-theta_test_obs_data = torch.zeros(N_test_obs_data, 4)
+    # obs data samples
+    torch.manual_seed(seed + 2)
+    N_test_obs_data = 1000
+    theta_test_obs_data = torch.zeros(N_test_obs_data, 4)
 
-for i in range(N_test_obs_data):
-    theta_test_obs_data[i, :] = theta_true
+    for i in range(N_test_obs_data):
+        theta_test_obs_data[i, :] = theta_true
 
-theta_test = theta_test.reshape(N_prior_pred_test, 4)
-theta_test_obs_data = theta_test_obs_data.reshape(N_test_obs_data, 4)
-theta_post_pred = theta_post_pred.reshape(N_post_pred_test, 4)
+    theta_test = theta_test.reshape(N_prior_pred_test, 4)
+    theta_test_obs_data = theta_test_obs_data.reshape(N_test_obs_data, 4)
+    theta_post_pred = theta_post_pred.reshape(N_post_pred_test, 4)
 
-# gen samples from trained model
-torch.manual_seed(seed)
-x_prior = inference._posterior.net.sample(1, context=theta_test)
-x_theta_true = inference._posterior.net.sample(1, context=theta_test_obs_data)
-x_post = inference._posterior.net.sample(1, context=theta_post_pred)
+    # gen samples from trained model
+    torch.manual_seed(seed)
+    x_prior = inference._posterior.net.sample(1, context=theta_test)
+    x_theta_true = inference._posterior.net.sample(1, context=theta_test_obs_data)
+    x_post = inference._posterior.net.sample(1, context=theta_post_pred)
 
-x_prior = x_prior.reshape((N_prior_pred_test, 9))
-x_theta_true = x_theta_true.reshape((N_test_obs_data, 9))
-x_post = x_post.reshape((N_post_pred_test, 9))
+    x_prior = x_prior.reshape((N_prior_pred_test, 9))
+    x_theta_true = x_theta_true.reshape((N_test_obs_data, 9))
+    x_post = x_post.reshape((N_post_pred_test, 9))
 
-# Write results
-np.savetxt('data/data_recon_prior_snl_' + id_job + '.csv', x_prior.detach().numpy(), delimiter=",")
+    # Write results
+    np.savetxt('data/data_recon_prior_snl_' + id_job + '.csv', x_prior.detach().numpy(), delimiter=",")
 
-np.savetxt('data/data_recon_snl_' + id_job + '.csv', x_theta_true.detach().numpy(), delimiter=",")
+    np.savetxt('data/data_recon_snl_' + id_job + '.csv', x_theta_true.detach().numpy(), delimiter=",")
 
-np.savetxt('data/data_recon_post_snl_' + id_job + '.csv', x_post.detach().numpy(), delimiter=",")
+    np.savetxt('data/data_recon_post_snl_' + id_job + '.csv', x_post.detach().numpy(), delimiter=",")

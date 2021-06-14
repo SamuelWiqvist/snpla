@@ -58,7 +58,15 @@ def set_up_networks(seed=10, dim=2):
 
     transforms = []
 
+    num_off_set = 0.0001  # numerical offset since the prior is on the open space
+    #shift, scale = calc_scale_and_shift(-1, 1)
+
+    #print(shift)
+    #print(scale)
+
     transforms.append(PointwiseAffineTransform(shift=0.5, scale=1 / 4.0))
+    #transforms.append(PointwiseAffineTransform(shift=shift, scale=scale))
+
     transforms.append(InvSigmoid.InvSigmoid())  # this should be inv sigmoide!
 
     for _ in range(num_layers):
@@ -73,3 +81,26 @@ def set_up_networks(seed=10, dim=2):
     flow_post = Flow(transform, base_dist_post)
 
     return flow_lik, flow_post
+
+
+def calc_scale_and_shift(lower, upper):
+    sigma_lower = 0
+    sigma_upper = 1
+
+    scale = (sigma_upper - sigma_lower) / (upper - lower)
+    shift = sigma_lower - lower * scale
+
+    return shift, scale
+
+
+def sample_hp(method, case):
+    torch.manual_seed(case)
+
+    if method == "snpe_c" or method == "snl" or method == "snre_b":
+        return 10 ** -4 + (10 ** -2 - 10 ** -4) * torch.rand(1)
+    else:
+        lr_like = 10 ** -4 + (10 ** -2 - 10 ** -4) * torch.rand(1)
+        lr_post = 10 ** -4 + (10 ** -2 - 10 ** -4) * torch.rand(1)
+        gamma_post = 0.8 + (0.999 - 0.8) * torch.rand(1)
+        lam = 0.65 + (0.95 - 0.65) * torch.rand(1)
+        return [lr_like[0].item(), lr_post[0].item(), gamma_post[0].item(), lam[0].item()]

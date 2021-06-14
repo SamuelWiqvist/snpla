@@ -31,6 +31,10 @@ def default_mapfunc_inverse(theta, x):
     return x - torch.cat((-torch.abs(z0), z1), 0)
 
 
+#mean_radius=0.1,
+#sd_radius=0.01,
+#baseoffset=0.25
+
 class TwoMoons():
 
     def __init__(self, prior, mean_radius=1.0, sd_radius=0.1, baseoffset=1.0, fixed_data=True):

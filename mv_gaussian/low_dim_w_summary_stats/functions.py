@@ -127,3 +127,17 @@ def set_up_networks(seed=10, dim=2):
     flow_post = Flow(transform, base_dist_post)
 
     return flow_lik, flow_post
+
+def sample_hp(method, case):
+
+    torch.manual_seed(case)
+
+    if method == "snpe_c" or method == "snl" or method == "snre_b":
+        return 10 ** -4 + (10 ** -2 - 10 ** -4) * torch.rand(1)
+    else:
+        lr_like = 10 ** -4 + (10 ** -2 - 10 ** -4) * torch.rand(1)
+        lr_post = 10 ** -4 + (10 ** -2 - 10 ** -4) * torch.rand(1)
+        gamma_post = 0.8 + (0.999 - 0.8) * torch.rand(1)
+        lam = 0.65 + (0.95 - 0.65) * torch.rand(1)
+        return [lr_like[0].item(), lr_post[0].item(), gamma_post[0].item(), lam[0].item()]
+

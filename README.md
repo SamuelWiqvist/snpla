@@ -1,8 +1,9 @@
+
 ## Code for: Sequential Neural Posterior and Likelihood Approximation
 
-This repo contains the code for the paper *Sequential Neural Posterior and Likelihood Approximation* https://arxiv.org/abs/2102.06522. 
+This repo contains the code for the paper *Sequential Neural Posterior and Likelihood Approximation* arxiv-link. 
 
-The results presented in the **first** Arxiv version of this paper where generated with the code at tag `preprint1`  
+The results presented in the **secound** Arxiv version of this paper where generated with the code at tag `preprint2`  
 
 ## Computer environment
 
@@ -21,7 +22,7 @@ The models were trained and run on the `LUNARC` computer system http://www.lunar
 
 ## Code structure 
 
-- `/algorithms` - source code for the SNPLA method
+- `/algorithms` - source code for the snpla method
 - `/util` - source code for some utility functions
 - `/mv_gaussian` - source code, run scripts, and notebooks for the MV Gaussian examples
 - `/two_moons` - source code, run scripts, and notebooks for the two-moons examples
@@ -35,17 +36,22 @@ The code for each experiment is structured as following:
 - The notebook `analysis.py` is used to produce all analysis and  plots
 - The `*.sh` files in the `/lunarc` folder are the scripts used to run the algorithms on the  `LUNARC` system
 
-**NB**: In some places in the code is it the case that `spa` and `spa_flow` are used to refer to `snpla`  
-
 
 ## Model simulator for the Hodgkin-Huxley model
 
 We used the `Neuron` software (https://neuron.yale.edu/neuron/) to simulate the Hodgkin-Huxley model. The `Neuron` software was installed on our local computer, and all simulations and calculations for the Hodgkin-Huxley were carried out on our local computer. When simulating the Hodgkin-Huxley model, we utilized the same `Neuron` set up as in *Sequential neural likelihood* (http://proceedings.mlr.press/v89/papamakarios19a.html)   
 
-
 ## Data
 
 The data used for all case studies can be generated from the code.
+
+
+## How to replicate the results
+
+The results for case study `C` and algorithm `A` are computed by running the scripts `A_main.sh` and the `A_main_h.sh` scripts 
+in `/lunarc` folder for case study `C`. The script `A_main_h.sh` will run the hyper-parameter search scheme and the script `A_main.sh`  
+will run the algorithm for the different data sets that are considered for case study `C`.   
+
 
 ##  Acknowledgements
 

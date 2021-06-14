@@ -4,11 +4,17 @@
 import torch
 import numpy as np
 import math
-from sbi import utils as utils
+from torch.distributions.uniform import Uniform
+from sbi.utils import BoxUniform
+
 from scipy import stats as spstats
+
+print("test")
 
 import neuron
 from neuron import h
+
+print("test")
 
 # create the neuron
 h.load_file('stdrun.hoc')
@@ -35,8 +41,9 @@ h('t_vec.indgen(0, tstop, dt)')
 h('v_vec = new Vector()')
 h('IN.soma v_vec.record(&v(0.5), t_vec)')
 
+
 class HodgkinHuxley:
-    def __init__(self, case, nbr_params):
+    def __init__(self, case, nbr_params, method="not_snpla"):
 
         params, settings = self.setup(case, nbr_params)
 
@@ -47,7 +54,6 @@ class HodgkinHuxley:
 
         self.nbr_params = nbr_params
         self.case = case
-
 
         self.log_theta_true = params
 
@@ -69,7 +75,7 @@ class HodgkinHuxley:
                 prior_higher[i] = math.log(math.exp(self.log_theta_true[i]) * 3 / 2)
             elif case == "snl":
                 prior_lower[i] = self.log_theta_true[i] - math.log(2)
-                prior_higher[i] = self.log_theta_true[i] + math.log(1.5)
+                prior_higher[i] = self.log_theta_true[i] + math.log(1.5)  # was 1.5
 
             # if self.log_theta_true[i] < 0:
             #    prior_lower[i] = self.log_theta_true[i] * 3 / 2
@@ -82,8 +88,10 @@ class HodgkinHuxley:
             #    #prior_lower[i] = self.log_theta_true[i] - math.log(2)
             #    #prior_higher[i] = self.log_theta_true[i] + math.log(3)
 
-        self.prior = utils.torchutils.BoxUniform(low=prior_lower,
-                                                 high=prior_higher)
+        if method == "snpla":
+            self.prior = Uniform(low=prior_lower, high=prior_higher)
+        else:
+            self.prior = BoxUniform(low=prior_lower, high=prior_higher)
 
     def setup(self, case, nbr_params):
 
@@ -165,9 +173,7 @@ class HodgkinHuxley:
             settings[2] = 10
             settings[3] = 5e-4
 
-        #elif case == "Lueckmann17":
-
-
+        # elif case == "Lueckmann17":
 
         return params, settings
 
@@ -209,8 +215,8 @@ class HodgkinHuxley:
 
         # fixed parameters
         C = 1.0  # uF/cm2
-        #kappa_beta_n_1 = 0.5
-        #kappa_beta_n_2 = 40
+        # kappa_beta_n_1 = 0.5
+        # kappa_beta_n_2 = 40
 
         # set parameters
         h.IN.soma[0](0.5).g_pas = g_leak  # g_leak
@@ -303,7 +309,7 @@ class HodgkinHuxley:
         # standardize before calc correlations
         # v_tensor = (v_tensor - v_tensor.mean()) / v_tensor.std()
 
-        #v_wo_mean = v - m1
+        # v_wo_mean = v - m1
 
         for i in range(n_auto_corr_lags):
             lag = int(2.5 / dt) * (i + 1)
